@@ -1,0 +1,8 @@
+{
+  "baseline_ctr": 0.1192,
+  "treatment_ctr": 0.1524,
+  "relative_lift": 0.27852348993288595,
+  "z_score": 4.845639178553482,
+  "p_value": 1.2620470148938523e-06,
+  "significant": true
+}

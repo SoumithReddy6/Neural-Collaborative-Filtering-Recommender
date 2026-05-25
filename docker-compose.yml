@@ -1,0 +1,10 @@
+services:
+  recommender-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - RECOMMENDER_INDEX_PATH=artifacts/item_vectors.npz
+    volumes:
+      - ./artifacts:/app/artifacts
+

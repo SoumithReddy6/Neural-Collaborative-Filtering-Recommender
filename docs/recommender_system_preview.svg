@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620" role="img" aria-label="Recommendation system dashboard preview">
+  <rect width="1100" height="620" fill="#f8fafc"/>
+  <rect x="36" y="34" width="1028" height="552" rx="8" fill="#ffffff" stroke="#d9e2ec"/>
+  <text x="70" y="82" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#111827">Neural Collaborative Filtering Recommender</text>
+  <text x="72" y="116" font-family="Arial, sans-serif" font-size="15" fill="#52606d">BPR ranking, FAISS retrieval, A/B lift, and interaction analytics</text>
+  <rect x="72" y="152" width="290" height="150" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="96" y="190" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#1e3a8a">NDCG@10</text>
+  <text x="96" y="250" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#1d4ed8">0.76+</text>
+  <text x="96" y="278" font-family="Arial, sans-serif" font-size="14" fill="#475569">held-out ranking target</text>
+  <rect x="405" y="152" width="290" height="150" rx="8" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text x="429" y="190" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#14532d">Lift vs MF</text>
+  <text x="429" y="250" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#15803d">19%+</text>
+  <text x="429" y="278" font-family="Arial, sans-serif" font-size="14" fill="#475569">relative NDCG improvement target</text>
+  <rect x="738" y="152" width="290" height="150" rx="8" fill="#fff7ed" stroke="#fed7aa"/>
+  <text x="762" y="190" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#7c2d12">API Latency</text>
+  <text x="762" y="250" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#c2410c">&lt;100ms</text>
+  <text x="762" y="278" font-family="Arial, sans-serif" font-size="14" fill="#475569">FAISS candidate retrieval target</text>
+  <rect x="72" y="350" width="450" height="165" rx="8" fill="#ffffff" stroke="#d9e2ec"/>
+  <text x="96" y="386" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">A/B Simulation</text>
+  <rect x="96" y="425" width="135" height="42" fill="#94a3b8"/>
+  <rect x="96" y="482" width="188" height="42" fill="#2563eb"/>
+  <text x="246" y="453" font-family="Arial, sans-serif" font-size="14" fill="#334155">MF baseline CTR</text>
+  <text x="300" y="510" font-family="Arial, sans-serif" font-size="14" fill="#334155">NCF treatment CTR</text>
+  <rect x="578" y="350" width="450" height="165" rx="8" fill="#ffffff" stroke="#d9e2ec"/>
+  <text x="602" y="386" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#111827">Retrieval Flow</text>
+  <circle cx="642" cy="454" r="30" fill="#dbeafe" stroke="#60a5fa"/>
+  <circle cx="786" cy="454" r="30" fill="#dcfce7" stroke="#4ade80"/>
+  <circle cx="930" cy="454" r="30" fill="#ffedd5" stroke="#fb923c"/>
+  <path d="M672 454 H756" stroke="#64748b" stroke-width="3"/>
+  <path d="M816 454 H900" stroke="#64748b" stroke-width="3"/>
+  <text x="613" y="512" font-family="Arial, sans-serif" font-size="13" fill="#334155">user vector</text>
+  <text x="759" y="512" font-family="Arial, sans-serif" font-size="13" fill="#334155">FAISS</text>
+  <text x="898" y="512" font-family="Arial, sans-serif" font-size="13" fill="#334155">top-k items</text>
+</svg>
+

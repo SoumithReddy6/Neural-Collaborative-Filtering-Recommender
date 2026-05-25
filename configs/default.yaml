@@ -1,0 +1,21 @@
+seed: 42
+dataset:
+  interactions_path: data/samples/interactions.csv
+  min_rating_positive: 4.0
+  test_ratio: 0.2
+model:
+  embedding_dim: 32
+  hidden_layers: [64, 32, 16]
+  dropout: 0.1
+training:
+  epochs: 8
+  batch_size: 128
+  learning_rate: 0.001
+  negatives_per_positive: 3
+retrieval:
+  top_k: 10
+  faiss_metric: inner_product
+tracking:
+  experiment_name: ncf-movielens-recommender
+  target_runs: 54
+
