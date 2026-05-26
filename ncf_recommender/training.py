@@ -61,6 +61,61 @@ def train_bpr(
     return TrainingResult(model=model, losses=losses)
 
 
+def evaluate_ranking_sampled(
+    model: nn.Module,
+    test_pairs: list[tuple[int, int]],
+    train_pairs: list[tuple[int, int]],
+    num_items: int,
+    k: int = 10,
+    num_negatives: int = 99,
+    seed: int = 42,
+) -> dict[str, float]:
+    """Standard NCF (He et al. 2017) sampled evaluation protocol.
+
+    For each held-out (user, item), rank the positive against `num_negatives`
+    randomly sampled items the user has not interacted with, then compute HR@k /
+    NDCG@k over that candidate set. This is the protocol the published HR@10 /
+    NDCG@10 numbers use; it is not comparable to full-catalog ranking.
+    """
+    rng = random.Random(seed)
+    user_seen: dict[int, set[int]] = {}
+    for user, item in train_pairs:
+        user_seen.setdefault(user, set()).add(item)
+    for user, item in test_pairs:
+        user_seen.setdefault(user, set()).add(item)
+
+    model.eval()
+    ndcgs: list[float] = []
+    hits: list[float] = []
+    precisions: list[float] = []
+    for user, item in test_pairs:
+        seen = user_seen.get(user, set())
+        negatives: list[int] = []
+        attempts = 0
+        while len(negatives) < num_negatives and attempts < num_negatives * 50:
+            candidate = rng.randrange(num_items)
+            attempts += 1
+            if candidate != item and candidate not in seen:
+                negatives.append(candidate)
+        candidates = [item] + negatives
+        users_tensor = torch.full((len(candidates),), user, dtype=torch.long)
+        items_tensor = torch.tensor(candidates, dtype=torch.long)
+        with torch.no_grad():
+            scores = model(users_tensor, items_tensor)
+        order = torch.argsort(scores, descending=True).tolist()
+        ranked = [candidates[i] for i in order]
+        relevant = {item}
+        ndcgs.append(ndcg_at_k(ranked, relevant, k))
+        hits.append(hit_rate_at_k(ranked, relevant, k))
+        precisions.append(precision_at_k(ranked, relevant, k))
+    return {
+        "ndcg_at_10": mean_metric(ndcgs),
+        "hit_rate_at_10": mean_metric(hits),
+        "precision_at_10": mean_metric(precisions),
+        "protocol": f"sampled_1_vs_{num_negatives}",
+    }
+
+
 def evaluate_ranking(
     model: nn.Module,
     test_pairs: list[tuple[int, int]],

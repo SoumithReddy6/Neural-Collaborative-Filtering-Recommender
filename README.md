@@ -105,18 +105,43 @@ Then train/evaluate:
 python3 scripts/evaluate_models.py --interactions data/processed/interactions.csv --epochs 10
 ```
 
-## Metrics
+## Results (real run on MovieLens)
 
-| Metric | Target | Current repo status | Reproduction |
-| --- | ---: | --- | --- |
-| NDCG@10 | 0.76+ | Ranking harness implemented | `scripts/evaluate_models.py` |
-| Lift over matrix factorization | 19%+ | Relative lift computed in smoke and eval scripts | `scripts/run_smoke_demo.py` |
-| API latency | < 100ms | FAISS/NumPy index reports latency per call | `scripts/build_faiss_index.py` |
-| Experiment tracking | 50+ runs | 162-run MLflow manifest generated | `scripts/generate_mlflow_runs.py` |
-| A/B simulation | required | CTR lift, z-score, p-value implemented | `scripts/run_ab_test.py` |
-| Interaction stats | required | CTR and session depth implemented | `ncf_recommender/stats.py` |
+Trained NCF and a Matrix Factorization baseline with BPR loss on MovieLens
+`ml-latest-small` (~100K ratings, 610 users, ~9.7K movies), 20 epochs, evaluated
+with leave-one-out and the **standard NCF sampled protocol** (1 positive vs 99
+sampled negatives — He et al. 2017). Reproduce:
 
-The included fixture is intentionally tiny so the code runs locally. The target metrics should be reported after training on MovieLens-25M, Amazon Product Reviews, or Yelp Open Dataset.
+```bash
+python3 scripts/prepare_movielens.py --input <ratings.csv> --output data/processed/interactions.csv
+python3 scripts/evaluate_models.py --interactions data/processed/interactions.csv --epochs 20 --protocol sampled
+```
+
+| Metric (1-vs-99 sampled) | NCF | Matrix Factorization |
+| --- | ---: | ---: |
+| HR@10 | 0.596 | **0.640** |
+| NDCG@10 | 0.341 | **0.391** |
+
+**Finding:** the well-tuned Matrix Factorization baseline *outperforms* NCF
+(HR@10 0.64 vs 0.60). This is consistent with the recsys literature (e.g. Dacrema
+et al. 2019, "Are We Really Making Much Progress?"), where strong MF baselines
+frequently match or beat neural recommenders. The value here is the rigorous
+comparison and correct evaluation protocol, not a claim that NCF wins.
+
+> Evaluation protocol matters enormously: the same models under *full-catalog*
+> ranking (every one of ~9.7K items) score HR@10 ≈ 0.02–0.03. The 0.6-range
+> numbers above use the sampled protocol that published HR@10/NDCG@10 figures
+> assume. Always state the protocol. Run full-catalog with `--protocol full`.
+
+### Engineering surface
+
+| Capability | Status |
+| --- | --- |
+| Models | NCF (MLP tower) + Matrix Factorization baseline, BPR loss |
+| Ranking metrics | NDCG@10, HR@10, Precision@10 (sampled + full-catalog protocols) |
+| Retrieval | FAISS-backed item index |
+| A/B testing | two-proportion z-test **simulation** (`scripts/run_ab_test.py` — synthetic CTRs, not a real experiment) |
+| Experiment tracking | MLflow run manifest generator |
 
 ## Repository Layout
 
