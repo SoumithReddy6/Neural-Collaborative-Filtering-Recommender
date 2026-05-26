@@ -20,7 +20,7 @@ from ncf_recommender.training import build_model, evaluate_ranking, train_bpr
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--interactions", default="data/samples/interactions.csv")
-    parser.add_argument("--output", default="artifacts/evaluation_metrics.json")
+    parser.add_argument("--output", default="artifacts/smoke_metrics.json")
     parser.add_argument("--epochs", type=int, default=12)
     args = parser.parse_args()
 
@@ -58,12 +58,14 @@ def main() -> None:
         "ncf": ncf_metrics,
         "matrix_factorization": mf_metrics,
         "relative_ndcg_lift": improvement,
-        "target_ndcg_at_10": 0.76,
-        "target_relative_lift": 0.19,
-        "api_latency_target_ms": 100,
         "interaction_patterns": stats,
-        "ab_test": ab_result.__dict__,
-        "local_fixture_note": "Smoke fixture validates the pipeline; target metrics are for full MovieLens-25M/Amazon/Yelp runs.",
+        "ab_test_simulation": ab_result.__dict__,
+        "note": (
+            "SMOKE TEST on the tiny bundled fixture (8 users) — these numbers are not "
+            "meaningful and exist only to validate the pipeline runs. ab_test_simulation "
+            "uses synthetic CTRs, not a real experiment. Real results are in docs/results.md "
+            "(MovieLens, sampled protocol). Reproduce with scripts/evaluate_models.py."
+        ),
     }
     Path(args.output).write_text(json.dumps(metrics, indent=2) + "\n")
     print(json.dumps(metrics, indent=2))

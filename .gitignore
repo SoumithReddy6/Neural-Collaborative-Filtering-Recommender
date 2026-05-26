@@ -11,4 +11,8 @@ data/processed/
 artifacts/*.pt
 artifacts/*.npz
 artifacts/*.index
+artifacts/movielens_*.json
+artifacts/smoke_metrics.json
+data/ml_ratings.csv
+data/*.csv
 

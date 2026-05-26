@@ -1,4 +1,5 @@
 {
+  "_simulation_note": "SYNTHETIC A/B test. The CTRs are inputs to a two-proportion z-test simulation (scripts/run_ab_test.py -> simulate_ab_test), NOT a real online experiment. Included to demonstrate the statistics only.",
   "baseline_ctr": 0.1192,
   "treatment_ctr": 0.1524,
   "relative_lift": 0.27852348993288595,

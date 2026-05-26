@@ -1,32 +1,18 @@
 {
+  "dataset": "MovieLens ml-latest-small (~100K ratings, 610 users, ~9.7K movies)",
+  "training": { "epochs": 20, "loss": "BPR", "embedding_dim": 32, "negatives_per_positive": 4 },
+  "eval_protocol": "sampled_1_vs_99 (He et al. 2017)",
   "ncf": {
-    "ndcg_at_10": 0.4086161741115257,
-    "hit_rate_at_10": 1.0,
-    "precision_at_10": 0.09999999999999999
+    "ndcg_at_10": 0.3411,
+    "hit_rate_at_10": 0.5961,
+    "precision_at_10": 0.0596
   },
   "matrix_factorization": {
-    "ndcg_at_10": 0.4335883919176269,
-    "hit_rate_at_10": 1.0,
-    "precision_at_10": 0.09999999999999999
+    "ndcg_at_10": 0.3915,
+    "hit_rate_at_10": 0.6404,
+    "precision_at_10": 0.0640
   },
-  "relative_ndcg_lift": -0.05759429512320852,
-  "target_ndcg_at_10": 0.76,
-  "target_relative_lift": 0.19,
-  "api_latency_target_ms": 100,
-  "interaction_patterns": {
-    "num_interactions": 32.0,
-    "num_users": 8.0,
-    "num_items": 10.0,
-    "ctr": 0.75,
-    "avg_session_depth": 2.0
-  },
-  "ab_test": {
-    "baseline_ctr": 0.1192,
-    "treatment_ctr": 0.1524,
-    "relative_lift": 0.27852348993288595,
-    "z_score": 4.845639178553482,
-    "p_value": 1.2620470148938523e-06,
-    "significant": true
-  },
-  "local_fixture_note": "Smoke fixture validates the pipeline; target metrics are for full MovieLens-25M/Amazon/Yelp runs."
+  "finding": "Matrix Factorization outperforms NCF (HR@10 0.64 vs 0.60), consistent with Dacrema et al. 2019.",
+  "full_catalog_reference": { "ncf_ndcg_at_10": 0.0066, "mf_ndcg_at_10": 0.0141, "note": "Same models, full-catalog ranking; ~20x lower. Protocol must be stated." },
+  "note": "Real run, reproduce with: python3 scripts/evaluate_models.py --interactions data/processed/interactions.csv --epochs 20 --protocol sampled. See docs/results.md."
 }
